@@ -9,7 +9,7 @@ import {
 import CalendarDay from "./CalendarDay";
 
 export default function Calendar() {
-  const [selectedMonth, setSelectedMonth] = useState(new Date());
+  const [selectedMonth] = useState(new Date());
 
   const calendarDays = useMemo(() => {
     //StartofMonth will give us start of the month for example July 1st 2024

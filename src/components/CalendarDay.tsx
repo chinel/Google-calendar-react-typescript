@@ -1,3 +1,7 @@
+import { endOfDay, isBefore, isSameMonth, isToday } from "date-fns";
+import { formatDate } from "../utils/formatDate";
+import { cc } from "../utils/joinClasses";
+
 type CalendarDayProps = {
   day: Date;
   showWeekName: boolean;
@@ -10,10 +14,20 @@ export default function CalendarDay({
   selectedMonth,
 }: CalendarDayProps) {
   return (
-    <div className="day non-month-day old-month-day">
+    <div
+      className={cc(
+        "day",
+        !isSameMonth(day, selectedMonth) && "non-month-day",
+        isBefore(endOfDay(day), new Date()) && "old-month-day"
+      )}
+    >
       <div className="day-header">
-        {showWeekName && <div className="week-name">Sun</div>}
-        <div className="day-number">28</div>
+        {showWeekName && (
+          <div className="week-name">
+            {formatDate(day, { weekday: "short" })}
+          </div>
+        )}
+        <div className={cc("day-number", isToday(day) && "today")}>{formatDate(day, { day: "numeric" })}</div>
         <button className="add-event-btn">+</button>
       </div>
       {/* <div className="events">
