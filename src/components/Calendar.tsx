@@ -5,11 +5,14 @@ import {
   endOfWeek,
   endOfMonth,
   eachDayOfInterval,
+  subMonths,
+  addMonths,
 } from "date-fns";
 import CalendarDay from "./CalendarDay";
+import { formatDate } from "../utils/formatDate";
 
 export default function Calendar() {
-  const [selectedMonth] = useState(new Date());
+  const [selectedMonth, setSelectedMonth] = useState(new Date());
 
   const calendarDays = useMemo(() => {
     //StartofMonth will give us start of the month for example July 1st 2024
@@ -22,12 +25,33 @@ export default function Calendar() {
   return (
     <div className="calendar">
       <div className="header">
-        <button className="btn">Today</button>
+        <button className="btn" onClick={() => setSelectedMonth(new Date())}>
+          Today
+        </button>
         <div>
-          <button className="month-change-btn">&lt;</button>
-          <button className="month-change-btn">&gt;</button>
+          <button
+            className="month-change-btn"
+            onClick={() => {
+              setSelectedMonth((prevMonth) => subMonths(prevMonth, 1));
+            }}
+          >
+            &lt;
+          </button>
+          <button
+            className="month-change-btn"
+            onClick={() => {
+              setSelectedMonth((prevMonth) => addMonths(prevMonth, 1));
+            }}
+          >
+            &gt;
+          </button>
         </div>
-        <span className="month-title">June 2023</span>
+        <span className="month-title">
+          {formatDate(selectedMonth, {
+            month: "long",
+            year: "numeric",
+          })}
+        </span>
       </div>
       <div className="days">
         {calendarDays.map((day, index) => (
