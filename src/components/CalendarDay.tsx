@@ -1,6 +1,7 @@
 import { endOfDay, isBefore, isSameMonth, isToday } from "date-fns";
 import { formatDate } from "../utils/formatDate";
 import { cc } from "../utils/joinClasses";
+import useEvents from "../hooks/useEvents";
 
 type CalendarDayProps = {
   day: Date;
@@ -13,6 +14,7 @@ export default function CalendarDay({
   showWeekName,
   selectedMonth,
 }: CalendarDayProps) {
+  const { addEvent } = useEvents();
   return (
     <div
       className={cc(
@@ -27,7 +29,9 @@ export default function CalendarDay({
             {formatDate(day, { weekday: "short" })}
           </div>
         )}
-        <div className={cc("day-number", isToday(day) && "today")}>{formatDate(day, { day: "numeric" })}</div>
+        <div className={cc("day-number", isToday(day) && "today")}>
+          {formatDate(day, { day: "numeric" })}
+        </div>
         <button className="add-event-btn">+</button>
       </div>
       {/* <div className="events">
