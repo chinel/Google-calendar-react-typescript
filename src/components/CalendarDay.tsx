@@ -2,6 +2,8 @@ import { endOfDay, isBefore, isSameMonth, isToday } from "date-fns";
 import { formatDate } from "../utils/formatDate";
 import { cc } from "../utils/joinClasses";
 import useEvents from "../hooks/useEvents";
+import { useState } from "react";
+import EventFormModal from "./EventFormModal";
 
 type CalendarDayProps = {
   day: Date;
@@ -14,6 +16,7 @@ export default function CalendarDay({
   showWeekName,
   selectedMonth,
 }: CalendarDayProps) {
+  const [isNewEventModalOpen, setIsNewEventModalOpen] = useState(false);
   const { addEvent } = useEvents();
   return (
     <div
@@ -32,7 +35,12 @@ export default function CalendarDay({
         <div className={cc("day-number", isToday(day) && "today")}>
           {formatDate(day, { day: "numeric" })}
         </div>
-        <button className="add-event-btn">+</button>
+        <button
+          className="add-event-btn"
+          onClick={() => setIsNewEventModalOpen(true)}
+        >
+          +
+        </button>
       </div>
       {/* <div className="events">
       <button className="all-day-event blue event">
@@ -49,6 +57,12 @@ export default function CalendarDay({
         <div className="event-name">Event Name</div>
       </button>
     </div> */}
+      <EventFormModal
+        isOpen={isNewEventModalOpen}
+        onClose={() => setIsNewEventModalOpen(false)}
+        onSubmit={addEvent}
+        date={day}
+      />
     </div>
   );
 }
