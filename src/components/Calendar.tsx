@@ -7,9 +7,11 @@ import {
   eachDayOfInterval,
   subMonths,
   addMonths,
+  isSameDay,
 } from "date-fns";
 import CalendarDay from "./CalendarDay";
 import { formatDate } from "../utils/formatDate";
+import useEvents from "../hooks/useEvents";
 
 export default function Calendar() {
   const [selectedMonth, setSelectedMonth] = useState(new Date());
@@ -21,6 +23,8 @@ export default function Calendar() {
     const lastWeekEnd = endOfWeek(endOfMonth(selectedMonth));
     return eachDayOfInterval({ start: firstWeekStart, end: lastWeekEnd });
   }, [selectedMonth]);
+
+  const { events } = useEvents();
 
   return (
     <div className="calendar">
@@ -60,6 +64,7 @@ export default function Calendar() {
             showWeekName={index < 7}
             key={day.getTime()}
             selectedMonth={selectedMonth}
+            events={events.filter((event) => isSameDay(day, event.date))}
           />
         ))}
       </div>

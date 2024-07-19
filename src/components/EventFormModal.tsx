@@ -71,6 +71,8 @@ export default function EventFormModal({
         startTime,
         endTime,
       };
+      modalProps.onClose();
+      onSubmit(newEvent);
     }
   };
 
