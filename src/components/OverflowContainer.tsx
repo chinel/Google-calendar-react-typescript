@@ -39,7 +39,7 @@ export function OverflowContainer<T>({
           break;
         }
 
-        amount = children.length - 1;
+        amount = children.length - i;
         child.style.display = "none";
         overflowElement?.style.removeProperty("display");
       }
