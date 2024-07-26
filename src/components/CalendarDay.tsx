@@ -6,6 +6,7 @@ import { useMemo, useState } from "react";
 import EventFormModal from "./EventFormModal";
 import { Event } from "../context/Events";
 import CalendarEvent from "./CalendarEvent";
+import { OverflowContainer } from "./OverflowContainer";
 
 type CalendarDayProps = {
   day: Date;
@@ -64,11 +65,15 @@ export default function CalendarDay({
         </button>
       </div>
       {sortedEvents.length > 0 && (
-        <div className="events">
-          {sortedEvents.map((event) => (
-            <CalendarEvent key={event.id} event={event} />
-          ))}
-        </div>
+        <OverflowContainer
+          className="events"
+          items={sortedEvents}
+          getKey={(event) => event.id}
+          renderItem={(event) => <CalendarEvent key={event.id} event={event} />}
+          renderOverflow={(amount) => (
+            <button className="events-view-more-btn">+{amount} More</button>
+          )}
+        />
       )}
       <EventFormModal
         isOpen={isNewEventModalOpen}
