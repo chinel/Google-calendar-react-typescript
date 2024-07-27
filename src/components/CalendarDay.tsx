@@ -7,6 +7,7 @@ import EventFormModal from "./EventFormModal";
 import { Event } from "../context/Events";
 import CalendarEvent from "./CalendarEvent";
 import { OverflowContainer } from "./OverflowContainer";
+import ViewMoreCalendarEventsModal from "./ViewMoreCalendarEventsModal";
 
 type CalendarDayProps = {
   day: Date;
@@ -22,6 +23,8 @@ export default function CalendarDay({
   events,
 }: CalendarDayProps) {
   const [isNewEventModalOpen, setIsNewEventModalOpen] = useState(false);
+  const [isViewMoreEventModalOpen, setIsViewMoreEventModalOpen] =
+    useState(false);
   const { addEvent } = useEvents();
 
   const sortedEvents = useMemo(() => {
@@ -71,7 +74,19 @@ export default function CalendarDay({
           getKey={(event) => event.id}
           renderItem={(event) => <CalendarEvent key={event.id} event={event} />}
           renderOverflow={(amount) => (
-            <button className="events-view-more-btn">+{amount} More</button>
+            <>
+              <button
+                onClick={() => setIsViewMoreEventModalOpen(true)}
+                className="events-view-more-btn"
+              >
+                +{amount} More
+              </button>
+              <ViewMoreCalendarEventsModal
+                events={sortedEvents}
+                isOpen={isViewMoreEventModalOpen}
+                onClose={() => setIsViewMoreEventModalOpen(false)}
+              />
+            </>
           )}
         />
       )}
